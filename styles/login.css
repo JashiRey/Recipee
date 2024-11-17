@@ -12,18 +12,24 @@ body {
   width: 100%;
   height: 100vh;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .main-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 100%;
+  width: 75%;
+  height: 75%;
+  background-color: #333;
 }
 
 .main-container div {
-  border: 1px solid #333;
+  height: 100%;
+  width: 50%;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-areas:
@@ -33,7 +39,7 @@ body {
     "footer footer footer";
   grid-gap: 20px;
   grid-auto-rows: minmax(100px, auto);
-} 
+}
 
 .signup {
   background-color: #cc2b52;
@@ -45,7 +51,6 @@ body {
   grid-template-columns: 1fr 2fr 1fr;
   grid-template-areas: "uno titulo dos";
 }
-
 
 .signup nav {
   background-color: rgb(255, 255, 0);
@@ -75,6 +80,6 @@ body {
   grid-template-columns: 1fr 2fr 1fr;
   grid-template-areas: "uno titulo dos";
 }
-  .login {
+.login {
   background-color: aliceblue;
 }
