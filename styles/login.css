@@ -1,0 +1,53 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Arial", sans-serif;
+}
+
+body {
+  font-family: "Arial", sans-serif;
+  background: linear-gradient(#de7c7d 60%, #cc2b52) no-repeat;
+  color: #333;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.main-container {
+  width: 75%;
+  height: 75%;
+  background-color: #333;
+  display: flex;
+}
+
+.main-container div {
+  height: 100%;
+  width: 50%;
+  border: 1px solid #333;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-areas:
+    "header header header"
+    "nav nav nav"
+    "aside section section"
+    "footer footer footer";
+  grid-gap: 20px;
+  grid-auto-rows: minmax(100px, auto);
+}
+
+.signup {
+  background-color: #cc2b52;
+}
+.signup header {
+  background-color: beige;
+  grid-area: header;
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-areas: "uno titulo dos";
+}
+.login {
+  background-color: aliceblue;
+}
