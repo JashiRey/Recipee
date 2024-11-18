@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recipee API Documentation</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .endpoint {
+        border: 1px solid #ddd;
+        margin: 20px 0;
+        padding: 20px;
+        border-radius: 5px;
+      }
+      .method {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 3px;
+        color: white;
+        font-weight: bold;
+        margin-right: 10px;
+      }
+      .get {
+        background-color: #61affe;
+      }
+      .post {
+        background-color: #49cc90;
+      }
+      .put {
+        background-color: #fca130;
+      }
+      .delete {
+        background-color: #f93e3e;
+      }
+      pre {
+        background-color: #f5f5f5;
+        padding: 15px;
+        border-radius: 5px;
+        overflow-x: auto;
+      }
+      h1 {
+        color: #333;
+      }
+      h2 {
+        color: #444;
+        border-bottom: 2px solid #eee;
+        padding-bottom: 10px;
+      }
+      h3 {
+        color: #666;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Recipee API Documentation</h1>
+
+    <h2>Users</h2>
+
+    <div class="endpoint">
+      <span class="method get">GET</span>
+      <code>/api/users/</code>
+      <p>Get all users or filter by parameters</p>
+      <h3>Query Parameters:</h3>
+      <ul>
+        <li><code>id</code> - Filter by user ID</li>
+        <li><code>email</code> - Filter by exact email match</li>
+      </ul>
+      <h3>Example URLs:</h3>
+      <ul>
+        <li><code>/api/users/</code> - Get all users</li>
+        <li><code>/api/users/?id=1</code> - Get user with ID 1</li>
+        <li><code>/api/users/?email=john@example.com</code> - Get user by email</li>
+      </ul>
+      <h3>Response:</h3>
+      <pre>
+[
+    {
+        "id": 1,
+        "name": "John Doe",
+        "email": "john@example.com"
+    }
+]</pre
+      >
+    </div>
+
+    <div class="endpoint">
+      <span class="method post">POST</span>
+      <code>/api/users/</code>
+      <p>Create a new user</p>
+      <h3>Request Body:</h3>
+      <pre>
+{
+    "name": "John Doe",
+    "email": "john@example.com",
+    "password": "secretpassword"
+}</pre
+      >
+      <h3>Response:</h3>
+      <pre>
+{
+    "message": "User created successfully",
+    "user_id": 1
+}</pre
+      >
+    </div>
+
+    <div class="endpoint">
+      <span class="method post">POST</span>
+      <code>/api/users/auth/</code>
+      <p>Authenticate user</p>
+      <h3>Request Body:</h3>
+      <pre>
+{
+    "email": "john@example.com",
+    "password": "secretpassword"
+}</pre
+      >
+      <h3>Response:</h3>
+      <pre>
+{
+    "message": "Authentication successful",
+    "user": {
+        "id": 1,
+        "name": "John Doe",
+        "email": "john@example.com"
+    }
+}</pre
+      >
+    </div>
+
+    <div class="endpoint">
+      <span class="method put">PUT</span>
+      <code>/api/users/</code>
+      <p>Update user information</p>
+      <h3>Request Body:</h3>
+      <pre>
+{
+    "id": 1,
+    "name": "John Updated",    // optional
+    "email": "new@email.com",  // optional
+    "password": "newpassword"  // optional
+}</pre
+      >
+      <h3>Response:</h3>
+      <pre>
+{
+    "message": "User updated successfully",
+    "user_id": 1
+}</pre
+      >
+    </div>
+
+    <div class="endpoint">
+      <span class="method delete">DELETE</span>
+      <code>/api/users/?id=1</code>
+      <p>Delete a user</p>
+      <h3>Example URL:</h3>
+      <ul>
+        <li><code>/api/users/?id=1</code> - Delete user with ID 1</li>
+      </ul>
+      <h3>Response:</h3>
+      <pre>
+{
+    "message": "User deleted successfully",
+    "user_id": 1
+}</pre
+      >
+    </div>
+
+    <h2>Recipes</h2>
+
+    <div class="endpoint">
+      <span class="method get">GET</span>
+      <code>/api/recipes/</code>
+      <p>Get all recipes or filter by parameters</p>
+      <h3>Query Parameters:</h3>
+      <ul>
+        <li><code>id</code> - Filter by recipe ID</li>
+        <li><code>user_id</code> - Filter by user ID</li>
+        <li><code>name</code> - Filter by recipe name (partial match)</li>
+        <li><code>ingredient_ids</code> - Filter by ingredient IDs (comma-separated)</li>
+      </ul>
+      <h3>Example URLs:</h3>
+      <ul>
+        <li><code>/api/recipes/</code> - Get all recipes</li>
+        <li><code>/api/recipes/?id=1</code> - Get recipe with ID 1</li>
+        <li><code>/api/recipes/?user_id=1</code> - Get all recipes by user 1</li>
+        <li><code>/api/recipes/?name=pasta</code> - Search recipes containing "pasta"</li>
+        <li>
+          <code>/api/recipes/?ingredient_ids=1,2,3</code> - Get recipes containing ingredients 1, 2, and 3
+        </li>
+      </ul>
+      <h3>Response:</h3>
+      <pre>
+[
+    {
+        "id": 1,
+        "user_id": 1,
+        "name": "Spaghetti Carbonara",
+        "content": "Recipe instructions...",
+        "imgurl": "https://example.com/image.jpg",
+        "ingredients": [
+            {
+                "ingredient_id": 1,
+                "name": "Spaghetti",
+                "quantity": 500,
+                "unit": "g",
+                "format": "decimal"
+            }
+        ]
+    }
+]</pre
+      >
+    </div>
+
+    <div class="endpoint">
+      <span class="method post">POST</span>
+      <code>/api/recipes/</code>
+      <p>Create a new recipe</p>
+      <h3>Request Body:</h3>
+      <pre>
+{
+    "user_id": 1,
+    "name": "Spaghetti Carbonara",
+    "content": "Recipe instructions...",
+    "imgurl": "https://example.com/image.jpg",
+    "ingredients": [
+        {
+            "ingredient_id": 1,
+            "quantity": 500,
+            "unit": "g",
+            "format": "decimal"
+        }
+    ]
+}</pre
+      >
+      <h3>Response:</h3>
+      <pre>
+{
+    "message": "Recipe created successfully",
+    "recipe_id": 1
+}</pre
+      >
+    </div>
+
+    <div class="endpoint">
+      <span class="method delete">DELETE</span>
+      <code>/api/recipes/?id=1</code>
+      <p>Delete a recipe</p>
+      <h3>Example URL:</h3>
+      <ul>
+        <li><code>/api/recipes/?id=1</code> - Delete recipe with ID 1</li>
+      </ul>
+      <h3>Response:</h3>
+      <pre>
+{
+    "message": "Recipe deleted successfully",
+    "recipe_id": 1
+}</pre
+      >
+    </div>
+
+    <h2>Ingredients</h2>
+
+    <div class="endpoint">
+      <span class="method get">GET</span>
+      <code>/api/ingredients/</code>
+      <p>Get all ingredients or filter by parameters</p>
+      <h3>Query Parameters:</h3>
+      <ul>
+        <li><code>id</code> - Filter by ingredient ID</li>
+        <li><code>name</code> - Filter by ingredient name (partial match)</li>
+      </ul>
+      <h3>Example URLs:</h3>
+      <ul>
+        <li><code>/api/ingredients/</code> - Get all ingredients</li>
+        <li><code>/api/ingredients/?id=1</code> - Get ingredient with ID 1</li>
+        <li><code>/api/ingredients/?name=oil</code> - Search ingredients containing "oil"</li>
+      </ul>
+      <h3>Response:</h3>
+      <pre>
+[
+    {
+        "id": 1,
+        "name": "Olive Oil"
+    }
+]</pre
+      >
+    </div>
+
+    <div class="endpoint">
+      <span class="method post">POST</span>
+      <code>/api/ingredients/</code>
+      <p>Create a new ingredient</p>
+      <h3>Request Body:</h3>
+      <pre>
+{
+    "name": "Olive Oil"
+}</pre
+      >
+      <h3>Response:</h3>
+      <pre>
+{
+    "message": "Ingredient created successfully",
+    "ingredient_id": 1
+}</pre
+      >
+    </div>
+
+    <div class="endpoint">
+      <span class="method put">PUT</span>
+      <code>/api/ingredients/</code>
+      <p>Update ingredient information</p>
+      <h3>Request Body:</h3>
+      <pre>
+{
+    "id": 1,
+    "name": "Updated Olive Oil"
+}</pre
+      >
+      <h3>Response:</h3>
+      <pre>
+{
+    "message": "Ingredient updated successfully",
+    "ingredient_id": 1
+}</pre
+      >
+    </div>
+
+    <div class="endpoint">
+      <span class="method delete">DELETE</span>
+      <code>/api/ingredients/?id=1</code>
+      <p>Delete an ingredient (only if not used in any recipes)</p>
+      <h3>Example URL:</h3>
+      <ul>
+        <li><code>/api/ingredients/?id=1</code> - Delete ingredient with ID 1</li>
+      </ul>
+      <h3>Response:</h3>
+      <pre>
+{
+    "message": "Ingredient deleted successfully",
+    "ingredient_id": 1
+}</pre
+      >
+    </div>
+  </body>
+</html>

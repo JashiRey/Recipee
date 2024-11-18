@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>API Playground</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        display: grid;
+        grid-template-columns: 300px 1fr;
+        gap: 20px;
+      }
+      #sidebar {
+        background: #f5f5f5;
+        padding: 20px;
+        border-radius: 5px;
+      }
+      .endpoint {
+        cursor: pointer;
+        padding: 10px;
+        margin: 5px 0;
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 3px;
+      }
+      .endpoint:hover {
+        background: #eee;
+      }
+      .method {
+        display: inline-block;
+        padding: 3px 8px;
+        border-radius: 3px;
+        color: white;
+        font-weight: bold;
+        margin-right: 5px;
+      }
+      .get {
+        background-color: #61affe;
+      }
+      .post {
+        background-color: #49cc90;
+      }
+      .put {
+        background-color: #fca130;
+      }
+      .delete {
+        background-color: #f93e3e;
+      }
+      #playground {
+        background: white;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+      textarea {
+        width: 100%;
+        height: 200px;
+        margin: 10px 0;
+        font-family: monospace;
+      }
+      button {
+        padding: 10px 20px;
+        background: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #45a049;
+      }
+      #response {
+        margin-top: 20px;
+        padding: 10px;
+        background: #f8f8f8;
+        border-radius: 3px;
+        white-space: pre-wrap;
+        font-family: monospace;
+      }
+      .active {
+        background: #e0e0e0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="sidebar">
+      <h2>Endpoints</h2>
+      <div id="endpoints"></div>
+    </div>
+    <div id="playground">
+      <h2>API Playground</h2>
+      <div>
+        <label for="url">URL:</label>
+        <input type="text" id="url" style="width: 100%; margin: 10px 0; padding: 5px" />
+      </div>
+      <div>
+        <label for="method">Method:</label>
+        <select id="method" style="margin: 10px 0; padding: 5px">
+          <option value="GET">GET</option>
+          <option value="POST">POST</option>
+          <option value="PUT">PUT</option>
+          <option value="DELETE">DELETE</option>
+        </select>
+      </div>
+      <div id="bodySection" style="display: none">
+        <label for="body">Request Body:</label>
+        <textarea id="body"></textarea>
+      </div>
+      <button onclick="sendRequest()">Send Request</button>
+      <div id="response"></div>
+    </div>
+
+    <script>
+      const baseUrl = '/api'
+      const endpoints = [
+        // Users
+        { method: 'GET', path: '/users/', description: 'Get all users' },
+        { method: 'GET', path: '/users/?id=1', description: 'Get user by ID' },
+        {
+          method: 'POST',
+          path: '/users/',
+          description: 'Create user',
+          body: { name: 'John Doe', email: 'john@example.com', password: 'password123' }
+        },
+        {
+          method: 'PUT',
+          path: '/users/',
+          description: 'Update user',
+          body: { id: 1, name: 'John Updated', email: 'john.updated@example.com' }
+        },
+        { method: 'DELETE', path: '/users/?id=1', description: 'Delete user' },
+        {
+          method: 'POST',
+          path: '/users/auth/',
+          description: 'Authenticate user',
+          body: { email: 'john@example.com', password: 'password123' }
+        },
+
+        // Recipes
+        { method: 'GET', path: '/recipes/', description: 'Get all recipes' },
+        { method: 'GET', path: '/recipes/?id=1', description: 'Get recipe by ID' },
+        { method: 'GET', path: '/recipes/?user_id=1', description: 'Get recipes by user' },
+        { method: 'GET', path: '/recipes/?ingredient_ids=1,2', description: 'Get recipes by ingredients' },
+        {
+          method: 'POST',
+          path: '/recipes/',
+          description: 'Create recipe',
+          body: {
+            user_id: 1,
+            name: 'Spaghetti Carbonara',
+            content: 'Recipe instructions...',
+            imgurl: 'https://example.com/image.jpg',
+            ingredients: [{ ingredient_id: 1, quantity: 500, unit: 'g', format: 'decimal' }]
+          }
+        },
+        {
+          method: 'PUT',
+          path: '/recipes/',
+          description: 'Update recipe',
+          body: {
+            id: 1,
+            name: 'Updated Recipe',
+            content: 'Updated instructions...',
+            ingredients: [{ ingredient_id: 1, quantity: 300, unit: 'g', format: 'decimal' }]
+          }
+        },
+        { method: 'DELETE', path: '/recipes/?id=1', description: 'Delete recipe' },
+
+        // Ingredients
+        { method: 'GET', path: '/ingredients/', description: 'Get all ingredients' },
+        { method: 'GET', path: '/ingredients/?id=1', description: 'Get ingredient by ID' },
+        { method: 'GET', path: '/ingredients/?name=oil', description: 'Search ingredients' },
+        {
+          method: 'POST',
+          path: '/ingredients/',
+          description: 'Create ingredient',
+          body: { name: 'Olive Oil' }
+        },
+        {
+          method: 'PUT',
+          path: '/ingredients/',
+          description: 'Update ingredient',
+          body: { id: 1, name: 'Extra Virgin Olive Oil' }
+        },
+        { method: 'DELETE', path: '/ingredients/?id=1', description: 'Delete ingredient' }
+      ]
+
+      // Populate endpoints sidebar
+      const endpointsDiv = document.getElementById('endpoints')
+      endpoints.forEach((endpoint, index) => {
+        const div = document.createElement('div')
+        div.className = 'endpoint'
+        div.innerHTML = `
+                <span class="method ${endpoint.method.toLowerCase()}">${endpoint.method}</span>
+                <span>${endpoint.description}</span>
+            `
+        div.onclick = () => selectEndpoint(index)
+        endpointsDiv.appendChild(div)
+      })
+
+      function selectEndpoint(index) {
+        const endpoint = endpoints[index]
+        document.getElementById('url').value = baseUrl + endpoint.path
+        document.getElementById('method').value = endpoint.method
+
+        const bodySection = document.getElementById('bodySection')
+        const bodyTextarea = document.getElementById('body')
+
+        if (endpoint.method === 'POST' || endpoint.method === 'PUT') {
+          bodySection.style.display = 'block'
+          bodyTextarea.value = endpoint.body ? JSON.stringify(endpoint.body, null, 2) : ''
+        } else {
+          bodySection.style.display = 'none'
+          bodyTextarea.value = ''
+        }
+
+        // Update active state
+        document.querySelectorAll('.endpoint').forEach((el, i) => {
+          el.classList.toggle('active', i === index)
+        })
+      }
+
+      async function sendRequest() {
+        const url = document.getElementById('url').value
+        const method = document.getElementById('method').value
+        const body = document.getElementById('body').value
+        const responseDiv = document.getElementById('response')
+
+        try {
+          const options = {
+            method,
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }
+
+          if (method === 'POST' || method === 'PUT') {
+            options.body = body
+          }
+
+          const response = await fetch(url, options)
+          const text = await response.text() // Get raw response text first
+
+          try {
+            // Try to parse as JSON
+            const data = JSON.parse(text)
+            responseDiv.innerHTML = JSON.stringify(data, null, 2)
+            responseDiv.style.color = response.ok ? 'black' : 'red'
+          } catch (e) {
+            // If not JSON, show the raw response
+            responseDiv.innerHTML = `Server returned non-JSON response:\n\n${text}`
+            responseDiv.style.color = 'red'
+          }
+        } catch (error) {
+          responseDiv.innerHTML = 'Error: ' + error.message
+          responseDiv.style.color = 'red'
+        }
+      }
+
+      // Select first endpoint by default
+      selectEndpoint(0)
+    </script>
+  </body>
+</html>

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recipe API Setup Guide</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .step {
+        margin: 30px 0;
+        padding: 20px;
+        background: #f5f5f5;
+        border-radius: 5px;
+      }
+      .substep {
+        margin-left: 20px;
+        padding: 10px;
+        border-left: 3px solid #e0e0e0;
+      }
+      .substep h4 {
+        color: #2196f3; /* Blue color for substep headers */
+        margin: 15px 0 10px 0;
+      }
+      /* Parent list items that contain substeps */
+      .step > ol > li {
+        margin: 15px 0;
+      }
+      .step > ol > li > strong {
+        color: #f3216e; /* Blue color for main step descriptions */
+        font-size: 1.2em;
+        font-weight: bold;
+      }
+      code {
+        background: #e0e0e0;
+        padding: 2px 5px;
+        border-radius: 3px;
+        font-family: monospace;
+      }
+      pre {
+        background: #2d2d2d;
+        color: #fff;
+        padding: 15px;
+        border-radius: 5px;
+        overflow-x: auto;
+      }
+      img {
+        max-width: 100%;
+        height: auto;
+        margin: 10px 0;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+      .warning {
+        background: #fff3cd;
+        border-left: 4px solid #ffc107;
+        padding: 15px;
+        margin: 10px 0;
+      }
+      h1,
+      h2 {
+        color: #333;
+      }
+      a {
+        color: #007bff;
+      }
+      .download-link {
+        text-decoration: none;
+      }
+
+      .download-link code {
+        color: #2196f3;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+
+      .download-link code:hover {
+        background-color: #d0d0d0;
+      }
+
+      .download-link:hover {
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Recipe API Setup Guide</h1>
+
+    <div class="step">
+      <h2>1. Install XAMPP</h2>
+      <ol>
+        <li>Visit the <a href="https://www.apachefriends.org/" target="_blank">XAMPP download page</a></li>
+        <li>
+          Download the version appropriate for your operating system:
+          <ul>
+            <li>Windows: XAMPP for Windows</li>
+            <li>macOS: XAMPP for OS X</li>
+            <li>Linux: XAMPP for Linux</li>
+          </ul>
+        </li>
+        <li>Run the installer and follow the installation wizard</li>
+        <li>
+          For macOS users:
+          <ul>
+            <li>Open the downloaded .dmg file</li>
+            <li>Double-click the XAMPP installer package</li>
+            <li>Follow the installation steps</li>
+            <li>XAMPP will be installed in <code>/Applications/XAMPP</code></li>
+          </ul>
+        </li>
+      </ol>
+    </div>
+
+    <div class="step">
+      <h2>2. Get the Repository</h2>
+      <ol>
+        <li>
+          <strong>Choose one of these methods:</strong>
+          <div class="substep">
+            <h4>Option A: Using Git</h4>
+            <ol>
+              <li>Open Terminal or Command Prompt</li>
+              <li>
+                Navigate to any directory where you want to clone the project
+                <pre>cd /path/to/your/preferred/location</pre>
+              </li>
+              <li>
+                Clone the repository:
+                <pre>git clone https://github.com/JashiRey/Recipee.git</pre>
+              </li>
+            </ol>
+
+            <h4>Option B: Direct Download</h4>
+            <ol>
+              <li>
+                Visit
+                <a href="https://github.com/JashiRey/Recipee" target="_blank"
+                  >https://github.com/JashiRey/Recipee</a
+                >
+              </li>
+              <li>Click the green "Code" button and select "Download ZIP"</li>
+              <li>Extract the ZIP file to any location on your computer</li>
+            </ol>
+          </div>
+        </li>
+        <li>
+          <strong>Copy or move the project folder to XAMPP's htdocs:</strong>
+          <div class="substep">
+            <h4>For macOS:</h4>
+            <pre>mv /path/to/downloaded/Recipee /Applications/XAMPP/xamppfiles/htdocs/recipee</pre>
+            <p>
+              Or use Finder to copy the folder to: <code>/Applications/XAMPP/xamppfiles/htdocs/recipee</code>
+            </p>
+
+            <h4>For Windows:</h4>
+            <pre>move C:\path\to\downloaded\Recipee C:\xampp\htdocs\recipee</pre>
+            <p>Or use File Explorer to copy the folder to: <code>C:\xampp\htdocs\recipee</code></p>
+          </div>
+        </li>
+        <li>
+          <strong
+            >Verify that the project folder is named exactly <code>recipee</code> in the htdocs
+            directory</strong
+          >
+        </li>
+      </ol>
+      <div class="warning">
+        Important: Make sure the final path is:
+        <ul>
+          <li>macOS: <code>/Applications/XAMPP/xamppfiles/htdocs/recipee</code></li>
+          <li>Windows: <code>C:\xampp\htdocs\recipee</code></li>
+        </ul>
+        The folder name must be exactly "recipee" (lowercase) for the API to work correctly.
+      </div>
+    </div>
+
+    <div class="step">
+      <h2>3. Configure Apache</h2>
+      <ol>
+        <li>Open XAMPP Control Panel</li>
+        <li>Click on "Config" next to Apache</li>
+        <li>Select "httpd.conf"</li>
+        <li>
+          Find the following lines and modify them:
+          <pre>
+DocumentRoot "/Applications/XAMPP/xamppfiles/htdocs/recipee"
+&lt;Directory "/Applications/XAMPP/xamppfiles/htdocs/recipee"&gt;</pre
+          >
+        </li>
+        <li>Save the file</li>
+        <li>Restart Apache using XAMPP Control Panel</li>
+      </ol>
+      <div class="warning">
+        Important: Make sure the path matches your actual installation path. Windows users will need to use
+        Windows-style paths:
+        <pre>
+DocumentRoot "C:/xampp/htdocs/recipee"
+&lt;Directory "C:/xampp/htdocs/recipee"&gt;</pre
+        >
+      </div>
+    </div>
+
+    <div class="step">
+      <h2>4. Set Up the Database</h2>
+      <ol>
+        <li>Start both Apache and MySQL in XAMPP Control Panel</li>
+        <li>
+          Open your browser and navigate to
+          <a href="http://localhost/phpmyadmin" target="_blank">http://localhost/phpmyadmin</a>
+        </li>
+        <li>Click on "New" to create a new database</li>
+        <li>Name it "recipee" and click "Create"</li>
+        <li>Click on the "Import" tab</li>
+        <li>
+          Download the database script:
+          <a href="/api/docs/setup-script.sql" download="setup-script.sql" class="download-link">
+            <code>setup-script.sql</code>
+          </a>
+        </li>
+        <li>Click "Choose File" in phpMyAdmin and select the downloaded script</li>
+        <li>Click "Go" to import the database structure</li>
+      </ol>
+    </div>
+
+    <div class="step">
+      <h2>5. Verify Installation</h2>
+      <ol>
+        <li>Open your browser</li>
+        <li>
+          Navigate to <a href="http://localhost/api/docs/" target="_blank">http://localhost/api/docs/</a>
+        </li>
+        <li>You should see the API documentation page</li>
+        <li>
+          Try the API playground at
+          <a href="http://localhost/api/playground/" target="_blank">http://localhost/api/playground/</a>
+        </li>
+      </ol>
+    </div>
+
+    <div class="warning">
+      <h3>Troubleshooting</h3>
+      <ul>
+        <li>Make sure both Apache and MySQL are running in XAMPP Control Panel</li>
+        <li>Check Apache error logs if you encounter issues</li>
+        <li>Verify file permissions are correct</li>
+        <li>Make sure all paths in httpd.conf match your actual installation</li>
+        <li>If you get database connection errors, verify your database name and credentials</li>
+      </ul>
+    </div>
+  </body>
+</html>
