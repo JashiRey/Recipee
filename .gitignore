@@ -1,0 +1,14 @@
+composer.phar
+*/vendor/
+*/node_modules/
+*/public/js/
+*/public/css/
+/public/images/
+/public/fonts/
+*/.env
+.env
+.env.local
+.htaccess
+.htaccess.example
+.htaccess.example.backup
+.htaccess.backup
