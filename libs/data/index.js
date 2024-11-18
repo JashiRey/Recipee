@@ -1,5 +1,5 @@
 // Base API configuration
-const API_BASE_URL = '/recipee/api'
+const API_BASE_URL = '/api'
 
 // API response handler
 const handleResponse = async response => {
