@@ -4,16 +4,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Welcome</title>
-    <link rel="stylesheet" href="/styles/login.css"/>
-    <link rel="stylesheet" href="/styles/index.css">
+    <link rel="stylesheet" href="/styles/login.css" />
+    <link rel="stylesheet" href="/styles/index.css" />
   </head>
   <body>
     <div class="container-title-login">
       <h1 class="title">Recipee</h1>
       <div class="settings">
-          <div class="user-container" id="toggle-settings">
-            <div class="head"></div>
-            <div class="ubody"></div>
+        <div class="user-container" id="toggle-settings">
+          <div class="head"></div>
+          <div class="ubody"></div>
         </div>
         <div class="settings-content">
           <a href="login.html">Log In</a>
@@ -24,13 +24,43 @@
     </div>
     <div class="main-container">
       <div class="signup">
-        <header><h1 class="titulo">SIGN UP for Recipee</h1></header>
-        <nav>continue with <button>G</button><button>f</button></nav>
-        <aside></aside>
-        <section><h2>buenos dias</h2></section>
-        <footer></footer>
+        <div class="header" id="headsign">
+          <h1 class="titulo">Sign Up for Recipee</h1>
+        </div>
+        <div class="content">
+          <h2>Create your account</h2>
+          <br />
+          <label for="username">Name/Username</label>
+          <input type="text" name="username" id="" placeholder="Username" />
+          <label for="pasword">Password</label>
+          <input type="password" name="pasword" placeholder="Password" />
+          <label for="pasword">Confirm Password</label>
+          <input type="password" name="pasword" placeholder="Password" />
+          <label for="mail">Enter your email</label>
+          <input type="email" name="mail" placeholder="@gmail" />
+        </div>
+        <div class="nav">pasword generator</div>
+        <div class="btn">
+          <button>confirm</button>
+        </div>
       </div>
-      <div class="login"></div>
+      <div class="login">
+        <div class="header" id="log">
+          <h1 class="titulo">Log In to Recipee</h1>
+        </div>
+        <div class="nav">
+          continue with <button>G</button> <button>F</button>
+        </div>
+        <div class="content">
+          <label for="username">Name/Username</label>
+          <input type="text" name="username" id="" placeholder="Username" />
+          <label for="pasword">Password</label>
+          <input type="password" name="pasword" placeholder="Password" />
+        </div>
+        <div class="btn">
+          <button>confirm</button>
+        </div>
+      </div>
     </div>
   </body>
   <script src="/script.js"></script>
