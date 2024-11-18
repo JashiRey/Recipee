@@ -162,8 +162,9 @@ body {
 
 @media screen and (max-width: 600px) {
   body {
-    height: 100%;
+    height: auto;
     background: linear-gradient(#de7c7d, #cc2b52) no-repeat;
+    padding-top: 6em;
   }
 
   .features {
