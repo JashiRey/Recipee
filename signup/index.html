@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Iniciar Sesión - Recipee</title>
+    <title>Registrarse - Recipee</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
     <style>
       :root {
@@ -157,10 +157,22 @@
     <div class="login-container">
       <div class="login-header">
         <a href="/" class="logo">Recipee</a>
-        <p>¡Bienvenido de nuevo!</p>
+        <p>Crea tu cuenta para continuar</p>
       </div>
 
-      <form id="loginForm" onsubmit="handleLogin(event)">
+      <form id="signupForm" onsubmit="handleSignup(event)">
+        <div class="form-group">
+          <i class="fas fa-user"></i>
+          <input
+            type="text"
+            id="username"
+            class="form-input"
+            placeholder="Nombre de usuario"
+            required
+            minlength="3"
+            maxlength="50" />
+        </div>
+
         <div class="form-group">
           <i class="fas fa-envelope"></i>
           <input type="email" id="email" class="form-input" placeholder="Correo electrónico" required />
@@ -168,22 +180,71 @@
 
         <div class="form-group">
           <i class="fas fa-lock"></i>
-          <input type="password" id="password" class="form-input" placeholder="Contraseña" required />
+          <input
+            type="password"
+            id="password"
+            class="form-input"
+            placeholder="Contraseña"
+            required
+            minlength="6" />
         </div>
 
-        <div id="errorMessage" class="error-message">Correo o contraseña inválidos</div>
+        <div id="errorMessage" class="error-message">Error al crear la cuenta</div>
 
-        <button type="submit" class="login-button">Iniciar Sesión</button>
+        <button type="submit" class="login-button">Crear Cuenta</button>
       </form>
 
       <div class="back-home">
-        <a href="/"> <i class="fas fa-arrow-left"></i> Volver al Inicio </a>
-      </div>
-
-      <div class="back-home">
-        <a href="/signup"> <i class="fas fa-user-plus"></i> Crear cuenta </a>
+        <a href="/login/"> ¿Ya tienes cuenta? Inicia sesión </a>
       </div>
     </div>
+
+    <script type="module">
+      import { UsersAPI } from '/recipee/js/api/index.js'
+
+      window.handleSignup = async event => {
+        event.preventDefault()
+
+        const username = document.getElementById('username').value
+        const email = document.getElementById('email').value
+        const password = document.getElementById('password').value
+        const errorMessage = document.getElementById('errorMessage')
+        const signupButton = document.querySelector('.login-button')
+        const form = document.getElementById('signupForm')
+
+        errorMessage.style.display = 'none'
+
+        try {
+          signupButton.disabled = true
+          signupButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creando cuenta...'
+
+          const response = await UsersAPI.createUser({
+            name: username,
+            email,
+            password
+          })
+
+          // Auto login after signup
+          const loginResponse = await UsersAPI.authenticate({
+            email,
+            password
+          })
+
+          localStorage.setItem('user', JSON.stringify(loginResponse.user))
+          window.location.href = '/home/'
+        } catch (error) {
+          errorMessage.textContent = error.message || 'Error al crear la cuenta'
+          errorMessage.style.display = 'block'
+          form.classList.add('shake')
+
+          setTimeout(() => {
+            form.classList.remove('shake')
+          }, 400)
+        } finally {
+          signupButton.disabled = false
+          signupButton.innerHTML = 'Crear Cuenta'
+        }
+      }
+    </script>
   </body>
-  <script src="/script.js"></script>
 </html>

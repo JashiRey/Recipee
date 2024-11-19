@@ -168,15 +168,34 @@
           display: none;
         }
       }
+
+      .nav-links .login-button {
+        background: var(--primary);
+        color: white;
+        padding: 0.5rem 1.5rem;
+        border-radius: 50px;
+        transition: transform 0.3s, box-shadow 0.3s;
+      }
+
+      .nav-links .login-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      @media (max-width: 768px) {
+        .nav-links {
+          display: flex;
+          gap: 1rem;
+        }
+      }
     </style>
   </head>
   <body>
     <nav class="navbar">
       <a href="/" class="logo">Recipee</a>
       <div class="nav-links">
-        <a href="/api/docs/">Documentation</a>
-        <a href="/api/playground/">API Playground</a>
-        <a href="https://github.com/JashiRey/Recipee" target="_blank">GitHub</a>
+        <a href="/home/">Dashboard</a>
+        <a href="/login/" class="login-button">Iniciar Sesión</a>
       </div>
     </nav>
 
@@ -187,7 +206,7 @@
           Discover delicious recipes based on the ingredients you already have. Save your ingredient
           collections and never waste food again.
         </p>
-        <a href="/app/" class="cta-button">Start Cooking</a>
+        <a href="/home/" class="cta-button">Start Cooking</a>
       </div>
     </section>
 
