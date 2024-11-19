@@ -4,60 +4,224 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/styles/index.css" />
-    <title>Recipee</title>
+    <title>Recipee - Find Recipes with Your Ingredients</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+      :root {
+        --primary: #ff6b6b;
+        --secondary: #4ecdc4;
+        --dark: #2c3e50;
+        --light: #f7f9fc;
+        --gray: #95a5a6;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', system-ui, sans-serif;
+      }
+
+      body {
+        background-color: var(--light);
+        color: var(--dark);
+        line-height: 1.6;
+      }
+
+      .navbar {
+        background: white;
+        padding: 1rem 5%;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--primary);
+        text-decoration: none;
+      }
+
+      .nav-links a {
+        color: var(--dark);
+        text-decoration: none;
+        margin-left: 2rem;
+        transition: color 0.3s;
+      }
+
+      .nav-links a:hover {
+        color: var(--primary);
+      }
+
+      .hero {
+        padding: 8rem 5% 4rem;
+        text-align: center;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color: white;
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .hero-content {
+        max-width: 800px;
+      }
+
+      .hero h1 {
+        font-size: 3.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .hero p {
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+        opacity: 0.9;
+      }
+
+      .cta-button {
+        display: inline-block;
+        padding: 1rem 2rem;
+        background: white;
+        color: var(--primary);
+        text-decoration: none;
+        border-radius: 50px;
+        font-weight: bold;
+        transition: transform 0.3s, box-shadow 0.3s;
+      }
+
+      .cta-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .features {
+        padding: 5rem 5%;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        background: white;
+      }
+
+      .feature-card {
+        text-align: center;
+        padding: 2rem;
+        border-radius: 10px;
+        background: var(--light);
+        transition: transform 0.3s;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .feature-icon {
+        font-size: 2.5rem;
+        color: var(--primary);
+        margin-bottom: 1rem;
+      }
+
+      .feature-card h3 {
+        margin-bottom: 1rem;
+        color: var(--dark);
+      }
+
+      .feature-card p {
+        color: var(--gray);
+      }
+
+      footer {
+        background: var(--dark);
+        color: white;
+        padding: 2rem 5%;
+        text-align: center;
+      }
+
+      .social-links {
+        margin-top: 1rem;
+      }
+
+      .social-links a {
+        color: white;
+        margin: 0 0.5rem;
+        font-size: 1.5rem;
+        opacity: 0.8;
+        transition: opacity 0.3s;
+      }
+
+      .social-links a:hover {
+        opacity: 1;
+      }
+
+      @media (max-width: 768px) {
+        .hero h1 {
+          font-size: 2.5rem;
+        }
+
+        .nav-links {
+          display: none;
+        }
+      }
+    </style>
   </head>
   <body>
-    <div class="container-title-login">
-      <h1 class="title">Recipee</h1>
-      <div class="settings">
-        <div class="user-container" id="toggle-settings">
-          <div class="head"></div>
-          <div class="ubody"></div>
-        </div>
-        <div class="settings-content">
-          <a href="/html/login.html">Log In</a>
-          <a href="/html/settings.html">Settings (wip)</a>
-          <a href="/">Home</a>
-        </div>
+    <nav class="navbar">
+      <a href="/" class="logo">Recipee</a>
+      <div class="nav-links">
+        <a href="/api/docs/">Documentation</a>
+        <a href="/api/playground/">API Playground</a>
+        <a href="https://github.com/JashiRey/Recipee" target="_blank">GitHub</a>
       </div>
-    </div>
-    <div class="landing-content">
-      <section class="intro">
-        <h2>Welcome to Recipee</h2>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-content">
+        <h1>Find Perfect Recipes with Your Ingredients</h1>
         <p>
-          Discover delicious recipes tailored to the ingredients you have at home. No more wasted
-          food or last-minute grocery runs!
+          Discover delicious recipes based on the ingredients you already have. Save your ingredient
+          collections and never waste food again.
         </p>
-      </section>
-      <section class="features">
-        <div class="feature">
-          <img src="/images/easy-to-use.jpg" alt="Easy to use" />
-          <h3>Easy to Use</h3>
-          <p>
-            Simply enter the ingredients you have, and we'll provide you with a variety of recipes
-            to choose from.
-          </p>
-        </div>
-        <div class="feature">
-          <img src="/images/variety.jpg" alt="Variety of Recipes" />
-          <h3>Variety of Recipes</h3>
-          <p>From appetizers to desserts, find recipes for every occasion and taste.</p>
-        </div>
-        <div class="feature">
-          <img src="/images/save-money.jpg" alt="Save Money" />
-          <h3>Save Money</h3>
-          <p>
-            Use what you have and reduce food waste, saving you money and helping the environment.
-          </p>
-        </div>
-      </section>
-      <section class="call-to-action">
-        <h2>Join Recipee Today!</h2>
-        <p>Sign up now and start creating delicious meals with the ingredients you already have.</p>
-        <a href="/html/login.html" class="cta-button">Get Started</a>
-      </section>
-    </div>
+        <a href="/app/" class="cta-button">Start Cooking</a>
+      </div>
+    </section>
+
+    <section class="features">
+      <div class="feature-card">
+        <i class="fas fa-search feature-icon"></i>
+        <h3>Smart Recipe Search</h3>
+        <p>Find recipes that match your available ingredients instantly</p>
+      </div>
+      <div class="feature-card">
+        <i class="fas fa-layer-group feature-icon"></i>
+        <h3>Ingredient Baskets</h3>
+        <p>Save multiple ingredient collections for different occasions</p>
+      </div>
+      <div class="feature-card">
+        <i class="fas fa-clock feature-icon"></i>
+        <h3>Quick Access</h3>
+        <p>Your ingredient baskets are always ready when you need them</p>
+      </div>
+      <div class="feature-card">
+        <i class="fas fa-share-alt feature-icon"></i>
+        <h3>Share Recipes</h3>
+        <p>Share your favorite recipes with friends and family</p>
+      </div>
+    </section>
+
+    <footer>
+      <p>© 2024 Recipee. All rights reserved.</p>
+      <div class="social-links">
+        <a href="#" target="_blank"><i class="fab fa-github"></i></a>
+        <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+        <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
+      </div>
+    </footer>
     <script src="/script.js"></script>
   </body>
 </html>
