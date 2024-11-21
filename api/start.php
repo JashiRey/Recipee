@@ -5,7 +5,7 @@
     
   header("Content-Type: application/json"); // Asegura que la respuesta sea JSON
 
-  $db = new mysqli('localhost', 'root', 'fqwc]=RY6CG27Tv7DYAD', 'recipee');
+  $db = new mysqli('localhost', 'root', '', 'recipee');
 
   if(!$db) {
     die('Connection failed: ' . mysqli_connect_error());
