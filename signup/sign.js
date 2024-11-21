@@ -7,13 +7,24 @@ document.getElementById('signupForm').addEventListener('submit', async event => 
     password: document.getElementById('password').value
   }
 
-  const response = await fetch('/api/users/index.php', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(signupdata)
-  })
-  const result = await response.json()
-  alert(`Resultado: ${result.message}`)
+  try {
+    const response = await fetch('/api/users/index.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(signupdata)
+    })
+
+    const result = await response.json()
+
+    if (!response.ok) {
+      throw new Error(result.message || 'Error al crear la cuenta')
+    }
+
+    alert(`Resultado: ${result.message}`)
+  } catch (error) {
+    document.getElementById('errorMessage').textContent = error.message
+    document.getElementById('errorMessage').style.display = 'block'
+  }
 })
