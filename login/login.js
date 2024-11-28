@@ -1,29 +1,26 @@
-document.getElementById('loginForm').addEventListener('submit', async event => {
-  event.preventDefault()
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('loginForm').addEventListener('submit', async event => {
+    event.preventDefault()
 
-  const logindata = {
-    email: document.getElementById('email').value,
-    password: document.getElementById('password').value
-  }
+    password = document.getElementById('password').value
 
-  try {
-    const response = await fetch('/api/users/auth/index.php', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(logindata)
-    })
+    var login = localStorage.getItem(user)
 
-    const result = await response.json()
-
-    if (!response.ok) {
-      throw new Error(result.message || 'Correo o contraseña inválidos')
+    if (login) {
+      var parsedUser = JSON.parse(login)
+      if (parsedUser.password === password) {
+        localStorage.setItem('user', JSON.stringify(parsedUser))
+        alert('Bienvenido')
+        console.log(localStorage(login))
+      } else {
+        if (parsedUser.password !== password) {
+          alert('Contraseña incorrecta')
+        } else {
+          alert('Correo electrónico incorrecto')
+        }
+      }
+    } else {
+      alert('Email no encontrado, porfavor registrate')
     }
-
-    alert(`Resultado: ${result.message}`)
-  } catch (error) {
-    document.getElementById('errorMessage').textContent = error.message
-    document.getElementById('errorMessage').style.display = 'block'
-  }
+  })
 })
