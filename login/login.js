@@ -1,26 +1,25 @@
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('loginForm').addEventListener('submit', async event => {
-    event.preventDefault()
+const login = localStorage.getItem('user')
 
-    password = document.getElementById('password').value
+if (login) {
+  window.location.href = '/home'
+}
 
-    var login = localStorage.getItem(user)
+document.getElementById('loginForm').addEventListener('submit', async event => {
+  event.preventDefault()
 
-    if (login) {
-      var parsedUser = JSON.parse(login)
-      if (parsedUser.password === password) {
-        localStorage.setItem('user', JSON.stringify(parsedUser))
-        alert('Bienvenido')
-        console.log(localStorage(login))
-      } else {
-        if (parsedUser.password !== password) {
-          alert('Contraseña incorrecta')
-        } else {
-          alert('Correo electrónico incorrecto')
-        }
-      }
-    } else {
-      alert('Email no encontrado, porfavor registrate')
-    }
+  const password = document.getElementById('password').value
+  const email = document.getElementById('email').value
+
+  const response = await fetch('/api/users/auth/', {
+    method: 'POST',
+    body: JSON.stringify({ email, password })
   })
+
+  if (response.ok) {
+    const { user } = await response.json()
+    localStorage.setItem('user', JSON.stringify(user))
+    window.location.href = '/home'
+  } else {
+    alert('Correo electrónico o contraseña incorrecto')
+  }
 })

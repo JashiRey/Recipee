@@ -7,36 +7,57 @@
     $user_id = $_GET["user_id"] ?? null;
     $name = $_GET["name"] ?? null;
     $ingredient_ids = $_GET["ingredient_ids"] ?? null;
+    $search = $_GET["search"] ?? null;
 
     $conditions = [];
     $params = [];
     $types = "";
 
     // Build query conditions
-    if ($id !== null) {
+    if ($id && $id !== null) {
         $conditions[] = "r.id = ?";
         $params[] = $id;
         $types .= "i";
     }
-    if ($user_id !== null) {
+    if ($user_id && $user_id !== null) {
         $conditions[] = "r.user_id = ?";
         $params[] = $user_id;
         $types .= "i";
     }
-    if ($name !== null) {
+    if ($name && $name !== null) {
         $conditions[] = "r.name LIKE ?";
         $params[] = "%$name%";
         $types .= "s";
     }
+    if ($search && $search !== null) {
+        $conditions[] = "LOWER(r.name) LIKE LOWER(?) OR LOWER(r.content) LIKE LOWER(?)";
+        $params[] = "%$search%";
+        $params[] = "%$search%";
+        $types .= "ss";
+    }
 
     // Base query
-    $query = "SELECT DISTINCT r.* FROM recipes r";
+    $query = "SELECT DISTINCT 
+        r.*,
+        GROUP_CONCAT(
+            CONCAT(
+                '{',
+                '\"name\":\"', i.name, '\",',
+                '\"quantity\":', rxi.quantity, ',',
+                '\"unit\":\"', rxi.unit, '\",',
+                '\"format\":\"', rxi.format, '\"',
+                '}'
+            )
+        ) as ingredients
+    FROM recipes r
+    LEFT JOIN recipes_x_ingredients rxi ON r.id = rxi.recipe_id
+    LEFT JOIN ingredients i ON rxi.ingredient_id = i.id";
     
-    // Add ingredient join if ingredient_ids are provided
-    if ($ingredient_ids !== null) {
+    // Add ingredient_ids join if provided
+    if ($ingredient_ids && $ingredient_ids !== null) {
         $ingredient_ids_array = explode(',', $ingredient_ids);
-        $query .= " JOIN recipes_x_ingredients rxi ON r.id = rxi.recipe_id";
-        $conditions[] = "rxi.ingredient_id IN (" . str_repeat('?,', count($ingredient_ids_array) - 1) . "?)";
+        $query .= " JOIN recipes_x_ingredients rxi2 ON r.id = rxi2.recipe_id";
+        $conditions[] = "rxi2.ingredient_id IN (" . str_repeat('?,', count($ingredient_ids_array) - 1) . "?)";
         $params = array_merge($params, $ingredient_ids_array);
         $types .= str_repeat("i", count($ingredient_ids_array));
     }
@@ -44,6 +65,22 @@
     // Add WHERE clause if there are conditions
     if (!empty($conditions)) {
         $query .= " WHERE " . implode(" AND ", $conditions);
+    }
+
+    // Add GROUP BY to handle the JSON_ARRAYAGG
+    $query .= " GROUP BY r.id";
+
+    // Add ORDER BY to sort by relevance if searching
+    if ($search !== null) {
+        $query .= " ORDER BY 
+            CASE 
+                WHEN LOWER(r.name) LIKE LOWER(?) THEN 1
+                WHEN LOWER(r.content) LIKE LOWER(?) THEN 2
+                ELSE 3 
+            END";
+        $params[] = "%$search%";
+        $params[] = "%$search%";
+        $types .= "ss";
     }
 
     // Prepare and execute the statement
@@ -54,6 +91,19 @@
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     $recipes = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    // Parse the ingredients string into an array
+    foreach ($recipes as &$recipe) {
+        if ($recipe['ingredients'] !== null) {
+            // Envolver el string en corchetes para convertirlo en un array JSON válido
+            $jsonString = '[' . $recipe['ingredients'] . ']';
+            $recipe['ingredients'] = json_decode($jsonString, true);
+        } else {
+            $recipe['ingredients'] = [];
+        }
+    }
+
+    unset($recipe); // Limpiar la referencia
 
     echo json_encode($recipes, JSON_PRETTY_PRINT);
     die();

@@ -61,8 +61,8 @@
     $result = mysqli_stmt_get_result($check_stmt);
     
     if (mysqli_num_rows($result) > 0) {
-        http_response_code(400);
-        echo json_encode(["message" => "Email already exists"], JSON_PRETTY_PRINT);
+        http_response_code(409);
+        echo json_encode("Email already exists", JSON_PRETTY_PRINT);
         die();
     }
 

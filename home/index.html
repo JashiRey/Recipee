@@ -5,53 +5,70 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Inicio - Recipee</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-    <link rel="stylesheet" href="/styles/dashboard.css">
-    <script src="home.js"></script>
+    <link rel="stylesheet" href="/styles/dashboard.css" />
   </head>
   <body>
     <nav class="sidebar">
       <a href="/" class="logo">Recipee</a>
-      <ul class="nav-menu">
+      <ul class="nav-menu" id="navMenu">
         <li class="nav-item">
           <a href="#" class="nav-link active">
             <i class="fas fa-home"></i>
             Inicio
           </a>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a href="#" class="nav-link">
             <i class="fas fa-search"></i>
             Buscar Recetas
           </a>
-        </li>
-        <li class="nav-item">
+        </li> -->
+        <!-- <li class="nav-item">
           <a href="#" class="nav-link">
             <i class="fas fa-layer-group"></i>
             Mis Canastas
           </a>
-        </li>
-        <li class="nav-item">
+        </li> -->
+        <!-- <li class="nav-item">
           <a href="#" class="nav-link">
             <i class="fas fa-heart"></i>
             Favoritos
           </a>
-        </li>
-        <li class="nav-item">
+        </li> -->
+        <!-- <li class="nav-item">
           <a href="#" class="nav-link">
             <i class="fas fa-cog"></i>
             Configuración
           </a>
-        </li>
+        </li> -->
       </ul>
-      <a href="#" class="logout-button" id="logoutButton">
+      <button class="logout-button" id="logoutButton">
         <i class="fas fa-sign-out-alt"></i>
         Cerrar Sesión
-      </a>
+      </button>
+
+      <hr class="nav-divider" />
+      <h1 class="logo">Mi canasta</h1>
+      <form class="basket-form" id="basketForm">
+        <input type="text" name="ingredient" placeholder="Ingrediente" />
+        <button type="submit"><i class="fas fa-plus"></i></button>
+      </form>
+      <lu id="basketCard" class="basket-card"></lu>
     </nav>
 
     <main class="main-content">
       <div class="header">
-        <h1>Inicio</h1>
+        <form id="searchForm" class="search-form">
+          <input
+            autocomplete="off"
+            type="text"
+            id="searchInput"
+            class="search-input"
+            placeholder="Buscar receta" />
+          <button type="submit">
+            <i class="fas fa-search"></i>
+          </button>
+        </form>
         <div class="user-profile">
           <div class="user-avatar" id="userInitials">U</div>
           <span id="userName">Usuario</span>
@@ -59,7 +76,7 @@
       </div>
 
       <div class="home-grid">
-        <div class="home-card">
+        <!-- <div class="home-card">
           <div class="card-header">
             <h3 class="card-title">Mis Canastas</h3>
             <div class="card-icon">
@@ -69,9 +86,9 @@
           <div class="card-content">
             <p id="basketsCount">0 canastas creadas</p>
           </div>
-        </div>
+        </div> -->
 
-        <div class="home-card">
+        <!-- <div class="home-card">
           <div class="card-header">
             <h3 class="card-title">Recetas Disponibles</h3>
             <div class="card-icon">
@@ -81,9 +98,9 @@
           <div class="card-content">
             <p id="recipesCount">0 recetas encontradas</p>
           </div>
-        </div>
+        </div> -->
 
-        <div class="home-card">
+        <!-- <div class="home-card">
           <div class="card-header">
             <h3 class="card-title">Favoritos</h3>
             <div class="card-icon">
@@ -93,10 +110,10 @@
           <div class="card-content">
             <p id="favoritesCount">0 recetas guardadas</p>
           </div>
-        </div>
+        </div> -->
       </div>
+      <div class="recipes-grid" id="recipesGrid"></div>
     </main>
+    <script type="module" src="/home/home.js"></script>
   </body>
-</html>
-
 </html>

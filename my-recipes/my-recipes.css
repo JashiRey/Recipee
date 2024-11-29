@@ -1,0 +1,167 @@
+/* Variables globales */
+:root {
+  --primary-color: #ff6b6b;
+  --secondary-color: #4ecdc4;
+  --text-color: #2d3436;
+  --background-color: #f9f9f9;
+  --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --transition: all 0.3s ease;
+}
+
+/* Estilos generales */
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Encabezado */
+.my-recipes-header {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+h1 {
+  font-size: 2.5rem;
+  color: var(--text-color);
+  margin: 0;
+}
+
+.create-recipe-btn {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 25px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.create-recipe-btn:hover {
+  background-color: #ff5252;
+  transform: translateY(-2px);
+}
+
+.back-btn {
+  background-color: transparent;
+  color: var(--text-color);
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  transition: var(--transition);
+}
+
+.back-btn:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Grid de recetas */
+.recipes-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+/* Tarjetas de recetas */
+.recipe-card {
+  flex: 0 1 calc(33.333% - 1.334rem);
+  min-width: 300px;
+  max-width: 100%;
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+  transition: var(--transition);
+}
+
+.recipe-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.recipe-card-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.recipe-card-content {
+  padding: 1.5rem;
+}
+
+.recipe-card-title {
+  font-size: 1.25rem;
+  margin: 0 0 1rem 0;
+  color: var(--text-color);
+}
+
+.recipe-card-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.recipe-card-button {
+  flex: 1;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: var(--transition);
+}
+
+.view-button {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.view-button:hover {
+  background-color: #3dbeb6;
+}
+
+.edit-button {
+  background-color: #ffd93d;
+  color: var(--text-color);
+}
+
+.edit-button:hover {
+  background-color: #ffd024;
+}
+
+.delete-button {
+  background-color: #ff6b6b;
+  color: white;
+}
+
+.no-recipes-message {
+  text-align: center;
+  padding: 3rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  color: #6c757d;
+}
+
+@media (max-width: 768px) {
+  .my-recipes-header {
+    flex-direction: row;
+    margin-bottom: 1.5rem;
+  }
+
+  .recipe-card {
+    flex: 0 1 100%;
+  }
+}

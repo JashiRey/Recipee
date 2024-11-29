@@ -2,6 +2,9 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('signupForm').addEventListener('submit', async event => {
     event.preventDefault()
 
+    document.getElementById('errorMessage').textContent = ''
+    document.getElementById('errorMessage').style.display = 'none'
+
     const signupdata = {
       name: document.getElementById('username').value,
       email: document.getElementById('email').value,
@@ -17,20 +20,22 @@ document.addEventListener('DOMContentLoaded', () => {
         body: JSON.stringify(signupdata)
       })
 
-      const result = await response.json()
-
       if (!response.ok) {
-        throw new Error(result.message || 'Error al crear la cuenta')
+        throw new Error((await response.text()) || 'Error al crear la cuenta')
       }
 
-      alert(`Resultado: ${result.message}`)
-      window.location.href = '../login/'
+      localStorage.setItem('user', JSON.stringify({ email: signupdata.email, name: signupdata.name }))
+
+      window.location.href = '/home'
     } catch (error) {
-      document.getElementById('errorMessage').textContent = error.message
+      let message
+      try {
+        message = message.message
+      } catch (e) {
+        message = error
+      }
+      document.getElementById('errorMessage').textContent = message
       document.getElementById('errorMessage').style.display = 'block'
     }
-
-    localStorage.setItem('user', JSON.stringify(signupdata))
-    console.log(localStorage.getItem('user'))
   })
 })

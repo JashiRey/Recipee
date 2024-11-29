@@ -5,17 +5,19 @@
     
   header("Content-Type: application/json"); // Asegura que la respuesta sea JSON
 
-<<<<<<< Updated upstream
-  $db = new mysqli('localhost', 'root', '', 'recipee');
-=======
   try {
     $db = new mysqli('localhost', 'root', '', 'recipee');
-    echo "Conexión exitosa";
+    // echo "Conexión exitosa";
   } catch (Exception $e) {
-      echo "Error: " . $e->getMessage();
+      // echo "Error: " . $e->getMessage();
+      http_response_code(500);
+      echo json_encode(["message" => "Failed to connect to database"], JSON_PRETTY_PRINT);
+      die();
   }
->>>>>>> Stashed changes
 
   if(!$db) {
-    die('Connection failed: ' . mysqli_connect_error());
+    // die('Connection failed: ' . mysqli_connect_error());
+    http_response_code(500);
+    echo json_encode(["message" => "Failed to connect to database"], JSON_PRETTY_PRINT);
+    die();
   }
